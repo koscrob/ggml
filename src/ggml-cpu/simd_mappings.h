@@ -882,3 +882,4 @@ static inline void __lzs_f16cx4_store(ggml_fp16_t * x, __vector float y) {
 #define GGML_F32_ARR (GGML_F32_STEP/GGML_F32_EPR)
 #define GGML_F16_ARR (GGML_F16_STEP/GGML_F16_EPR)
 #endif
+
