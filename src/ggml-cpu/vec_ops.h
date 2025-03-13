@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ggml-cpu.h"
 
 #include "ggml-cpu/simd_mappings.h"
