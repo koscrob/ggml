@@ -64,6 +64,11 @@ ggml_float ggml_vec_log_soft_max_f32(const int n, float * y, const float * x, fl
 
 void ggml_vec_silu_f32(const int n, float * y, const float * x);
 
+#ifdef __cplusplus
+}
+#endif
+
+
 inline void ggml_vec_set_i8(const int n, int8_t * x, const int8_t v) { for (int i = 0; i < n; ++i) x[i] = v; }
 inline void ggml_vec_set_i16(const int n, int16_t * x, const int16_t v) { for (int i = 0; i < n; ++i) x[i] = v; }
 
@@ -815,7 +820,3 @@ inline void ggml_vec_argmax_f32(const int n, int * s, const float * x) {
     }
     *s = idx;
 }
-
-#ifdef __cplusplus
-}
-#endif
