@@ -40,10 +40,10 @@ typedef double ggml_float;
 //
 
 // precomputed gelu table for f16 (128 KB)
-ggml_fp16_t ggml_table_gelu_f16[1 << 16];
+extern ggml_fp16_t ggml_table_gelu_f16[1 << 16];
 
 // precomputed quick gelu table for f16 (128 KB)
-ggml_fp16_t ggml_table_gelu_quick_f16[1 << 16];
+extern ggml_fp16_t ggml_table_gelu_quick_f16[1 << 16];
 
 //
 // fundamental operations
