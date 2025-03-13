@@ -29,6 +29,7 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         ggml-cpu/unary_ops.h
         ggml-cpu/unary_ops.cpp
         ggml-cpu/vec_ops.h
+        ggml-cpu/vec_ops.cpp
         ggml-cpu/simd_mappings.h
         ggml-cpu/more_ops.h
         ggml-cpu/more_ops.cpp
