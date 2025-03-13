@@ -11,6 +11,7 @@
 
 #include <string>
 #include <stdlib.h>
+#include <float.h>
 
 #if defined(_MSC_VER)
 // disable "possible loss of data" to avoid hundreds of casts
