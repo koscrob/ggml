@@ -23,6 +23,15 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         ggml-cpu/amx/mmq.cpp
         ggml-cpu/amx/mmq.h
         ggml-cpu/ggml-cpu-impl.h
+        ggml-cpu/common.h
+        ggml-cpu/binary_ops.h
+        ggml-cpu/binary_ops.cpp
+        ggml-cpu/unary_ops.h
+        ggml-cpu/unary_ops.cpp
+        ggml-cpu/vec_ops.h
+        ggml-cpu/simd_mappings.h
+        ggml-cpu/more_ops.h
+        ggml-cpu/more_ops.cpp
         )
 
     target_compile_features(${GGML_CPU_NAME} PRIVATE c_std_11 cxx_std_17)
