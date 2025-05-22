@@ -3969,6 +3969,38 @@ void ggml_vec_dot_q8_0_q8_0(int n, float * GGML_RESTRICT s, size_t bs, const voi
     }
 
     sumf = hsum_float_8(accum);
+#elif defined(__SSE3__)
+    __m128 sums = _mm_setzero_ps();
+
+    for (; ib < nb; ++ib) {
+        const __m128 d = _mm_set_ps1(GGML_FP16_TO_FP32(x[ib].d) * GGML_FP16_TO_FP32(y[ib].d));
+
+        const __m128i qx_0   = _mm_loadu_si128((const __m128i *)x[ib].qs);
+        const __m128i qy_0   = _mm_loadu_si128((const __m128i *)y[ib].qs);
+        const __m128i qx_1   = _mm_loadu_si128((const __m128i *)x[ib].qs + 1);
+        const __m128i qy_1   = _mm_loadu_si128((const __m128i *)y[ib].qs + 1);
+        const __m128i qx_0_l = _mm_srai_epi16(_mm_unpacklo_epi8(qx_0, qx_0), 8);
+        const __m128i qx_0_h = _mm_srai_epi16(_mm_unpackhi_epi8(qx_0, qx_0), 8);
+        const __m128i qy_0_l = _mm_srai_epi16(_mm_unpacklo_epi8(qy_0, qy_0), 8);
+        const __m128i qy_0_h = _mm_srai_epi16(_mm_unpackhi_epi8(qy_0, qy_0), 8);
+        const __m128i qx_1_l = _mm_srai_epi16(_mm_unpacklo_epi8(qx_1, qx_1), 8);
+        const __m128i qx_1_h = _mm_srai_epi16(_mm_unpackhi_epi8(qx_1, qx_1), 8);
+        const __m128i qy_1_l = _mm_srai_epi16(_mm_unpacklo_epi8(qy_1, qy_1), 8);
+        const __m128i qy_1_h = _mm_srai_epi16(_mm_unpackhi_epi8(qy_1, qy_1), 8);
+        const __m128i xy_0_l = _mm_madd_epi16(qx_0_l, qy_0_l);
+        const __m128i xy_0_h = _mm_madd_epi16(qx_0_h, qy_0_h);
+        const __m128i xy_1_l = _mm_madd_epi16(qx_1_l, qy_1_l);
+        const __m128i xy_1_h = _mm_madd_epi16(qx_1_h, qy_1_h);
+        const __m128i sum_v0 = _mm_add_epi32(xy_0_l, xy_0_h);
+        const __m128i sum_v1 = _mm_add_epi32(xy_1_l, xy_1_h);
+        const __m128i sumv   = _mm_add_epi32(sum_v0, sum_v1);
+
+        sums = _mm_add_ps(sums, _mm_mul_ps(d, _mm_cvtepi32_ps(sumv)));
+    }
+
+    sums  = _mm_hadd_ps(sums, sums);
+    sums  = _mm_hadd_ps(sums, sums);
+    sumf += _mm_cvtss_f32(sums);
 #elif defined(__riscv_v_intrinsic)
     size_t vl = __riscv_vsetvl_e8m1(qk);
 
