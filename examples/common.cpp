@@ -10,10 +10,6 @@
 #include <regex>
 #include <sstream>
 
-#if defined(_MSC_VER)
-#pragma warning(disable: 4244 4267) // possible loss of data
-#endif
-
 // Function to check if the next argument exists
 static std::string get_next_arg(int& i, int argc, char** argv, const std::string& flag, gpt_params& params) {
     if (i + 1 < argc && argv[i + 1][0] != '-') {
@@ -245,17 +241,6 @@ std::map<std::string, int32_t> json_parse(const std::string & fname) {
     }
 
     return result;
-}
-
-std::string convert_to_utf8(const std::wstring & input) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.to_bytes(input);
-}
-
-
-std::wstring convert_to_wstring(const std::string & input) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(input);
 }
 
 void gpt_split_words(std::string str, std::vector<std::string>& words) {
